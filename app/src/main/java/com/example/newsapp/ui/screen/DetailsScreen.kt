@@ -38,10 +38,10 @@ import com.example.newsapp.R
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsScreen(newsData: NewsData, scrollState: ScrollState) {
+fun DetailsScreen(newsData: NewsData, scrollState: ScrollState, navController: NavController) {
 
     Scaffold(topBar = {
-        DetailTopAppBar()
+        DetailTopAppBar(onBackPressed = {navController.popBackStack()})
     }) {
         Column(
             modifier = Modifier
@@ -123,6 +123,7 @@ fun DetailsScreenPreview() {
             description = "The suspected kidnapper of four-year-old Cleo Smith has been treated in hospital for a second time amid reports he was “attacked” while in custody.",
             publishedAt = "2021-11-04T04:42:40Z"
         ),
-        rememberScrollState()
-    )
+        rememberScrollState(),
+        rememberNavController()
+        )
 }
