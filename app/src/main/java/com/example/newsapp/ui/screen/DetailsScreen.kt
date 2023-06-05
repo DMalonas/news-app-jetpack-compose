@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -10,11 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,12 +35,21 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.NewsData
 import com.example.newsapp.R
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(newsData: NewsData, scrollState: ScrollState) {
-    Column(
-        modifier = Modifier.fillMaxWidth().verticalScroll(scrollState).padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Details Screen", fontWeight = FontWeight.SemiBold)
+
+    Scaffold(topBar = {
+        DetailTopAppBar()
+    }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Details Screen", fontWeight = FontWeight.SemiBold)
 //        Button(
 //            onClick = {
 //                navController.navigate("TopNews") {
@@ -46,21 +61,42 @@ fun DetailsScreen(newsData: NewsData, scrollState: ScrollState) {
 //        ) {
 //            Text(text = "Go to Top News Screen + ${newsData.author}")
 //        }
-        Image(
-            painterResource(
-                id = newsData.image),
+            Image(
+                painterResource(
+                    id = newsData.image),
                 contentDescription = "")
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween) {
                 InfoWithIcon(Icons.Default.Edit, info = newsData.author)
                 InfoWithIcon(Icons.Default.DateRange, info = newsData.publishedAt)
+            }
+            Text(text=newsData.title, fontWeight = FontWeight.Bold)
+            Text(text=newsData.description, modifier = Modifier.padding(top=16.dp))
         }
-        Text(text=newsData.title, fontWeight = FontWeight.Bold)
-        Text(text=newsData.description, modifier = Modifier.padding(top=16.dp))
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailTopAppBar(onBackPressed: ()-> Unit = {}) {
+    TopAppBar(
+        title = {
+            Text(
+                text="Detail Screen",
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { onBackPressed() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "")
+            }
+        }
+    )
 }
 
 @Composable
