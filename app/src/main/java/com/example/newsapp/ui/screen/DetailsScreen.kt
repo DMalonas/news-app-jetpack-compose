@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.newsapp.MockData
+import com.example.newsapp.MockData.getTimeAgo
 import com.example.newsapp.NewsData
 import com.example.newsapp.R
 
@@ -71,7 +73,7 @@ fun DetailsScreen(newsData: NewsData, scrollState: ScrollState, navController: N
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 InfoWithIcon(Icons.Default.Edit, info = newsData.author)
-                InfoWithIcon(Icons.Default.DateRange, info = newsData.publishedAt)
+                InfoWithIcon(Icons.Default.DateRange, info = MockData.stringToDate(newsData.publishedAt).getTimeAgo())
             }
             Text(text=newsData.title, fontWeight = FontWeight.Bold)
             Text(text=newsData.description, modifier = Modifier.padding(top=16.dp))

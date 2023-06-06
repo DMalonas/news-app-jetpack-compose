@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.MockData
+import com.example.newsapp.MockData.getTimeAgo
 import com.example.newsapp.NewsData
 
 @Composable
@@ -73,7 +74,7 @@ fun TopNewsItem(newsData: NewsData, onNewsClick: ()-> Unit= {}) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = newsData.publishedAt,
+                text = MockData.stringToDate(newsData.publishedAt).getTimeAgo(),
                 color = Color.White,
                 fontWeight = FontWeight.SemiBold
             )
