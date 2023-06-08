@@ -22,7 +22,17 @@ fun BottomMenu(navController: NavController) {
         val currentRoute = navBackStackEntry?.destination?.route
         menuItems.forEach {
             BottomNavigationItem(label = {Text(text = it.title)}, alwaysShowLabel = true, selectedContentColor = Color.White, unselectedContentColor = Color.Gray, selected = currentRoute == it.route,
-                onClick = { /*TODO*/ },
+                onClick = {
+                          navController.navigate(it.route) {
+                              navController.graph.startDestinationRoute?.let {
+                                  route -> popUpTo(route) {
+                                      saveState = true
+                              }
+                          }
+                          launchSingleTop = true
+                          restoreState = true
+                      }
+                },
                 icon = {Icon(imageVector = it.icon, contentDescription = it.title)})
 
 
