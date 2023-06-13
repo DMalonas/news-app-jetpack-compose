@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+// https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
 // https://mvnrepository.com/artifact/androidx.compose.material/material
     implementation("androidx.compose.material:material:1.4.3")
