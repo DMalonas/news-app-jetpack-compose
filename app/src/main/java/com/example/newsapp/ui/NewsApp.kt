@@ -1,5 +1,6 @@
 package com.example.newsapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.navigation.navArgument
 import com.example.newsapp.BottomMenuScreen
 import com.example.newsapp.MockData
 import com.example.newsapp.components.BottomMenu
+import com.example.newsapp.network.NewsManager
 import com.example.newsapp.ui.screen.Categories
 import com.example.newsapp.ui.screen.DetailsScreen
 import com.example.newsapp.ui.screen.Sources
@@ -35,7 +37,7 @@ fun NewsApp() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
+fun MainScreen(navController: NavHostController, scrollState: ScrollState, newsManager: NewsManager = NewsManager()) {
     Scaffold(
         bottomBar = {
             BottomMenu(navController)
@@ -49,12 +51,15 @@ fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
                 .padding(paddingValues = innerPadding) // padding applied here
         ) {
             // all content should be here
-            Navigation(navController, scrollState)
+            Navigation(navController, scrollState, newsManager)
         }
     }
 }
 @Composable
-fun Navigation(navController: NavHostController, scrollState: ScrollState) {
+fun Navigation(navController: NavHostController, scrollState: ScrollState, newsManager: NewsManager) {
+    val articles = newsManager.newsResponse.value.articles
+    Log.d("news", "$articles")
+
     NavHost(navController =  navController, startDestination = "TopNews") {
         bottomNavigation(navController)
         composable("TopNews") {
