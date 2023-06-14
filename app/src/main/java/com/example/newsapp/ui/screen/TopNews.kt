@@ -76,7 +76,7 @@ fun TopNewsItem(article: TopNewsArticle, onNewsClick: ()-> Unit= {}) {
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .padding(top = 16.dp, start = 16.dp),
+                .padding(top = 1.dp, start = 1.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
