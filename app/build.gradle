@@ -47,7 +47,9 @@ android {
 }
 
 dependencies {
-
+// https://mvnrepository.com/artifact/com.github.skydoves/landscapist-coil
+//    implementation("com.github.skydoves:landscapist-coil:2.2.1")
+    implementation "com.github.skydoves:landscapist-coil:1.4.1"
     // https://mvnrepository.com/artifact/com.squareup.moshi/moshi-kotlin
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
 // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-moshi

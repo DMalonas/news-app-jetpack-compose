@@ -1,3 +1,4 @@
+
 package com.example.newsapp.ui.screen
 
 import androidx.compose.foundation.Image
@@ -18,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,19 +31,21 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.MockData
 import com.example.newsapp.MockData.getTimeAgo
 import com.example.newsapp.NewsData
+import com.example.newsapp.R
+import com.example.newsapp.models.TopNewsArticle
+import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
-fun TopNews(navController: NavController) {
+fun TopNews(navController: NavController, articles: List<TopNewsArticle>) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Top News", fontWeight = FontWeight.SemiBold)
         LazyColumn {
-            items(MockData.topNewsList) {
-                newsData ->
-                TopNewsItem(newsData = newsData, onNewsClick = {
-                    navController.navigate("Details/${newsData.id}")
-                })
+            items(articles.size) { index ->
+                TopNewsItem(article = articles[index], onNewsClick = {navController.navigate("Detail/$index")})
             }
         }
+    }
+}
 
 //        Button(
 //            onClick = {
@@ -52,20 +57,21 @@ fun TopNews(navController: NavController) {
 //            Text(text = "Go to Details Screen")
 //        }
 
-    }
-}
+//    }
+//}
 
 @Composable
-fun TopNewsItem(newsData: NewsData, onNewsClick: ()-> Unit= {}) {
+fun TopNewsItem(article: TopNewsArticle, onNewsClick: ()-> Unit= {}) {
     Box(modifier = Modifier
         .height(200.dp)
-        .padding(8.dp).clickable {
+        .padding(8.dp)
+        .clickable {
             onNewsClick()
         } ){
-        Image(
-            painter = painterResource(id = newsData.image),
-            contentDescription = "",
-            contentScale = ContentScale.FillBounds
+        CoilImage(
+            imageModel = article.urlToImage,
+            contentScale = ContentScale.Crop,
+            error = ImageBitmap.imageResource(R.drawable.breaking_news)
         )
         Column(
             modifier = Modifier
@@ -74,13 +80,13 @@ fun TopNewsItem(newsData: NewsData, onNewsClick: ()-> Unit= {}) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = MockData.stringToDate(newsData.publishedAt).getTimeAgo(),
+                text = MockData.stringToDate(article.publishedAt!!).getTimeAgo(),
                 color = Color.White,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(100.dp))
             Text(
-                text = newsData.title,
+                text = article.title!!,
                 color = Color.White,
                 fontWeight = FontWeight.SemiBold
             )
@@ -91,7 +97,8 @@ fun TopNewsItem(newsData: NewsData, onNewsClick: ()-> Unit= {}) {
 @Composable
 fun TopNewsPreview() {
 //    TopNews(rememberNavController())
-    TopNewsItem(newsData = NewsData(2,
+    TopNewsItem(
+        TopNewsArticle(
         author = "Raja Razek, CNN",
         title = "'Tiger King' Joe Exotic says he has been diagnosed with aggressive form of prostate cancer - CNN",
         description = "Joseph Maldonado, known as Joe Exotic on the 2020 Netflix docuseries \\\"Tiger King: Murder, Mayhem and Madness,\\\" has been diagnosed with an aggressive form of prostate cancer, according to a letter written by Maldonado.",
