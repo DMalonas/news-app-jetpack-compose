@@ -24,6 +24,7 @@ class NewsManager {
             _newsResponse
         }
 
+
     init {
         getArticles()
     }
