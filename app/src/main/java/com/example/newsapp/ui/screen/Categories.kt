@@ -37,7 +37,7 @@ import com.example.newsapp.network.NewsManager
 import com.skydoves.landscapist.coil.CoilImage
 
 @Composable
-fun Categories(onFetchCategory: (String) -> Unit={}, newsManager: NewsManager) {
+fun Categories(onFetchCategory: (String) -> Unit, newsManager: NewsManager) {
     val tabsItems = getAllArticlesCategory()
     Column {
         LazyRow() {
@@ -70,13 +70,13 @@ fun CategoryTab(category: String, isSelected: Boolean = false, onFetchCategory: 
             text = category,
             style = MaterialTheme.typography.body2,
             color = Color.White,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
         )
     }
 }
 
 @Composable
-fun ArticleContent(articles: List<TopNewsArticle>, modifier: Modifier = Modifier) {
+fun ArticleContent(articles: List<TopNewsArticle>, modifier: Modifier = Modifier.padding(8.dp)) {
     LazyColumn {
         items(articles) {
             article ->
@@ -88,9 +88,11 @@ fun ArticleContent(articles: List<TopNewsArticle>, modifier: Modifier = Modifier
                     CoilImage(
                         imageModel = article.urlToImage,
                         modifier = Modifier.size(100.dp),
-                        placeHolder = painterResource(
-                        id = R.drawable.breaking_news),
-                        error = R.drawable.breaking_news
+//                        placeHolder =
+//                            painterResource(
+//                                id = R.drawable.breaking_news
+//                            ),
+//                        error = R.drawable.breaking_news
                     )
                     Column(modifier.padding(8.dp)) {
                         Text(
