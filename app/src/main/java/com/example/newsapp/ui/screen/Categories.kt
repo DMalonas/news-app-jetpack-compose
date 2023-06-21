@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,11 +84,11 @@ fun ArticleContent(articles: List<TopNewsArticle>, modifier: Modifier = Modifier
                     CoilImage(
                         imageModel = article.urlToImage,
                         modifier = Modifier.size(100.dp),
-//                        placeHolder =
-//                            painterResource(
-//                                id = R.drawable.breaking_news
-//                            ),
-//                        error = R.drawable.breaking_news
+                        placeHolder =
+                            painterResource(
+                                id = R.drawable.breaking_news
+                            ),
+
                     )
                     Column(modifier.padding(8.dp)) {
                         Text(

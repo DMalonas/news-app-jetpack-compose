@@ -15,13 +15,21 @@ import retrofit2.Response
 
 class NewsManager {
 
-    val selectedCategory: MutableState<ArticleCategory?> = mutableStateOf(null)
+    val query = mutableStateOf("")
 
+
+    val selectedCategory: MutableState<ArticleCategory?> = mutableStateOf(null)
 
     private val _newsResponse = mutableStateOf(TopNewsResponse())
     val newsResponse: State<TopNewsResponse>
         @Composable get() = remember {
             _newsResponse
+        }
+
+    private val _searchedNewsResponse = mutableStateOf(TopNewsResponse())
+    val searchedNewsResponse: MutableState<TopNewsResponse>
+        @Composable get() = remember {
+            _searchedNewsResponse
         }
 
     private val _getArticleBySource = mutableStateOf(TopNewsResponse())
@@ -37,6 +45,8 @@ class NewsManager {
         }
 
     val sourceName = mutableStateOf("abc-news")
+
+
     init {
         getArticles()
     }
@@ -105,6 +115,30 @@ class NewsManager {
             }
         })
     }
+
+
+    fun getSearchedArticles(query:String) {
+        val service = Api.retrofitService.searchArticles(query)
+        service.enqueue(object : Callback<TopNewsResponse> {
+            override fun onResponse(
+                call: Call<TopNewsResponse>,
+                response: Response<TopNewsResponse>
+            ) {
+                if(response.isSuccessful) {
+                    _searchedNewsResponse.value = response.body()!!
+                    Log.d("search", "${_searchedNewsResponse.value}")
+                } else {
+                    Log.d("search", "${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
+                Log.d("search error", "${t.printStackTrace()}")
+            }
+        })
+    }
+
+
 
     fun onSelectedCategoryChanged(category:String){
         val newsCategory = getArticleCategory(category = category)

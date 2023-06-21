@@ -104,8 +104,9 @@ fun MainScreen(navController: NavHostController,scrollState: ScrollState) {
 
 @Composable
 fun Navigation(navController:NavHostController,scrollState: ScrollState,newsManager: NewsManager= NewsManager(),paddingValues: PaddingValues) {
-
-    val articles = newsManager.newsResponse.value.articles
+//    val articles = newsManager.newsResponse.value.articles
+    val articles = mutableListOf(TopNewsArticle())
+    articles.addAll(newsManager.newsResponse.value.articles ?: listOf(TopNewsArticle()))
     Log.d("newss","$articles")
     articles?.let {
         NavHost(navController = navController, startDestination =BottomMenuScreen.TopNews.route,modifier = Modifier.padding(paddingValues)) {
@@ -118,6 +119,13 @@ fun Navigation(navController:NavHostController,scrollState: ScrollState,newsMana
                 )) { navBackStackEntry ->
                 val index = navBackStackEntry.arguments?.getInt("index")
                 index?.let {
+                    if(newsManager.query.value.isNotEmpty()) {
+                        articles.clear()
+                        articles.addAll(newsManager.searchedNewsResponse.value.articles?: listOf())
+                    } else {
+                        articles.clear()
+                        articles.addAll(newsManager.newsResponse.value.articles?: listOf())
+                    }
                     val article = articles[index]
                     DetailsScreen(article, scrollState, navController)
                 }
@@ -129,7 +137,7 @@ fun Navigation(navController:NavHostController,scrollState: ScrollState,newsMana
 fun NavGraphBuilder.bottomNavigation(navController: NavHostController, articles:List<TopNewsArticle>,
                                      newsManager: NewsManager) {
     composable(BottomMenuScreen.TopNews.route) {
-        TopNews(navController, articles)
+        TopNews(navController, articles, newsManager.query, newsManager)
     }
     composable(BottomMenuScreen.Categories.route) {
         newsManager.getArticlesByCategory("business")
